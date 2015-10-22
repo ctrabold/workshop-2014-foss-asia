@@ -1,0 +1,773 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Implementing Continuous Delivery</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href=".//css/reset.css" type="text/css"/>
+
+  <link type="text/css" href=".//css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href=".//css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href=".//css/sh_style.css" rel="stylesheet" />
+  <link type="text/css" href=".//css/tipsy.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href=".//css/showoff.css" type="text/css"/>
+
+  <script type="text/javascript" src=".//js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src=".//js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src=".//js/jquery-print.js"></script>
+  <script type="text/javascript" src=".//js/jquery.batchImageLoad.js"></script>
+  <script type="text/javascript" src=".//js/jquery.parsequery.min.js"></script>
+  <script type="text/javascript" src=".//js/jquery.doubletap-0.1.js"></script>
+  <script type="text/javascript" src=".//js/jquery.tipsy.js"></script>
+
+  <script type="text/javascript" src=".//js/fg.menu.js"></script>
+  <script type="text/javascript" src=".//js/showoff.js"></script>
+  <script type="text/javascript" src=".//js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src=".//js/sh_main.min.js"></script>
+  <script type="text/javascript" src=".//js/core.js"></script>
+  <script type="text/javascript" src=".//js/showoffcore.js"></script>
+  <script type="text/javascript" src=".//js/coffee-script.js"></script>
+
+  
+    
+  
+
+  
+    
+    <link rel="stylesheet" href=".//file/style.css" type="text/css"/>
+  
+
+  
+
+  <script type="text/javascript">
+  $(function(){
+      setupPreso(false, './');
+  });
+  </script>
+
+</head>
+
+<body>
+
+<a tabindex="0" href="#search-engines" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="navmenu"><span class="ui-icon ui-icon-triangle-1-s"></span>slides</a>
+<div id="navigation" class="hidden"></div>
+<a tabindex="1" href="#search-engines" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="stylemenu"><span class="ui-icon ui-icon-triangle-1-s"></span>styles</a>
+<div id="stylepicker" class="hidden"></div>
+
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">c, t</td><td>table of contents (vi)</td></tr>
+    <tr><td class="key">f</td><td>toggle footer</td></tr>
+    <tr><td class="key">g</td><td>toggle follow</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+    <tr><td class="key">n</td><td>toggle notes</td></tr>
+    <tr><td class="key">p</td><td>run preshow</td></tr>
+    <tr><td class="key">P</td><td>toggle pause</td></tr>
+    <tr><td class="key">s</td><td>choose style</td></tr>
+  </table>
+</div>
+
+<div class="buttonNav">
+  <input type="submit" onClick="prevStep();" value="prev"/>
+  <input type="submit" onClick="nextStep();" value="next"/>
+</div>
+
+<div id="preso"><center>loading presentation...</center></div>
+<div id="footer">
+  <span id="followMode"></span>
+  <span id="slideInfo"></span>
+  <span id="debugInfo"></span>
+  <span id="notesInfo"></span>
+  <span id="slideFilename"></span>
+  <img id="disconnected" src="/css/disconnected.png" />
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<div id="intro/01_slide" class="slide " data-transition="none"><div class="content " ref="intro/01_slide/1">
+<h1>Implementing<br>Continuous Delivery</br>
+
+<h2>
+<a href="http://twitter.com/ctrabold">@ctrabold</a>, Christian Trabold</h2>
+
+<h2>FOSSAsia, March 1 2014</h2></h1>
+</div>
+</div><div id="intro/01_slide" class="slide smaller" data-transition="none"><div class="content smaller" ref="intro/01_slide/2">
+<p><img src="./file/intro/ctrabold.png" width="250"/></p>
+
+<ul>
+<li>ThoughtWorks Consultant Alumnus</li>
+<li>Member of TYPO3 Server Team</li>
+<li>Former TYPO3 developer</li>
+<li>Author for O'Reilly</li>
+</ul></div>
+</div><div id="intro/01_slide" class="slide new-chapter center" data-transition="none"><div class="content new-chapter center" ref="intro/01_slide/3">
+<h1>Who are you?</h1></div>
+</div><div id="intro/01_slide" class="slide bullets incremental" data-transition="none"><div class="content bullets incremental" ref="intro/01_slide/4">
+<h1>How big is your organization?</h1>
+
+<ul>
+<li>single digits</li>
+<li>tens</li>
+<li>hundreds</li>
+<li>thousands</li>
+<li>tens of thousands</li>
+</ul></div>
+</div><div id="intro/01_slide" class="slide bullets incremental" data-transition="none"><div class="content bullets incremental" ref="intro/01_slide/5">
+<h1>How often do you release to users?</h1>
+
+<ul>
+<li>more than once a day</li>
+<li>more than once a week</li>
+<li>more than once a month</li>
+<li>more than once a year</li>
+<li>once a year or less</li>
+</ul></div>
+</div><div id="intro/01_slide" class="slide bullets incremental" data-transition="none"><div class="content bullets incremental" ref="intro/01_slide/6">
+<h1>What languages do you deploy?</h1>
+
+<ul>
+<li>PHP</li>
+<li>Ruby</li>
+<li>Java</li>
+<li>&#x2026;</li>
+</ul></div>
+</div><div id="intro/01_slide" class="slide bullets incremental" data-transition="none"><div class="content bullets incremental" ref="intro/01_slide/7">
+<h1>Are you doing <i>Continuous Integration</i> already?</h1>
+
+<ul>
+<li>YES!</li>
+<li>Nope.</li>
+<li>What?</li>
+</ul></div>
+</div><div id="intro/01_slide" class="slide bullets incremental" data-transition="none"><div class="content bullets incremental" ref="intro/01_slide/8">
+<h1>Hopes &amp; concerns</h1>
+
+<ul>
+<li>What do you <i>hope</i> to get out of today&#x2019;s tutorial?</li>
+<li>Do you have <i>concerns</i> about today&#x2019;s content</li>
+</ul><div class="notes">
+
+<p>1) This workshop usually takes one day. I condensed it to fit in one hour.</p>
+
+<p>When talking about CD you might get the feeling "this will NEVER work for me / in my organization."</p>
+
+<p>THESE are exactly the pain points you should tackle.</p>
+
+<p>Steven Smith: Continuous Delivery is all about organisational change.
+http://www.stephen-smith.co.uk/continuous-delivery-and-organisational-change/</p>
+
+<p>"If you can't describe what you are doing as a process, you don't know what you're doing" - Deming</p>
+
+<p>2) The story:</p>
+
+<p>When giving a presentation it's often told it's best to tell a story to the audience.</p>
+
+<p>Well, I can tell stories, because each deployment of a new software version used to be a horror story.</p>
+
+<p>Back in the days.</p>
+
+<p>This talk is about the journey I had giving a customer the freedom to deploy whenever they felt it's the right time.</p>
+
+<p>And it's also about YOUR story. I'm happy to hear your story on how you deploy software and release new features.</p>
+
+<p>It's OK to ask.</p>
+
+</div></div>
+</div><div id="definition/01_slide" class="slide new-chapter center" data-transition="none"><div class="content new-chapter center" ref="definition/01_slide/1">
+<h1>What is <br><i>Continuous Delivery</i>?</br></h1>
+</div>
+</div><div id="definition/01_slide" class="slide " data-transition="none"><div class="content " ref="definition/01_slide/2">
+<h1>The capability to reliably release <br>software to production on demand</br>
+
+<h1>&#xA0;</h1></h1>
+</div>
+</div><div id="definition/01_slide" class="slide " data-transition="none"><div class="content " ref="definition/01_slide/3">
+<h1>The capability to reliably release <br>software to production on demand</br>
+
+<h1><strong>with confidence</strong></h1></h1>
+</div>
+</div><div id="definition/01_slide" class="slide " data-transition="none"><div class="content " ref="definition/01_slide/4">
+<h1>Agile in a Nutshell</h1>
+
+<p><img src="./file/definition/agile_101.png" width="100%"/></p>
+
+<div class="notes">
+
+<p>Manifesto for Agile Software Development
+We are uncovering better ways of developing&#x2028;software by doing it and helping others do it.&#x2028;Through this work we have come to value:
+Individuals and interactions over processes and tools&#x2028;Working software over comprehensive documentation&#x2028;Customer collaboration over contract negotiation&#x2028;Responding to change over following a plan
+That is, while there is value in the items on&#x2028;the right, we value the items on the left more.</p>
+
+<p>Kent Beck
+Mike Beedle
+Arie van Bennekum
+Alistair Cockburn
+Ward Cunningham
+Martin Fowler</p>
+
+<p>James Grenning
+Jim Highsmith
+Andrew Hunt
+Ron Jeffries
+Jon Kern
+Brian Marick</p>
+
+<p>Robert C. Martin
+Steve Mellor
+Ken Schwaber
+Jeff Sutherland
+Dave Thomas</p>
+
+<p>http://agilemanifesto.org/</p>
+
+<p>Done on a meeting at a ski trip.</p>
+
+</div></div>
+</div><div id="definition/01_slide" class="slide subsection" data-transition="none">
+  <div class="content subsection" ref="definition/01_slide/5">
+<h1>Manifesto for <br> Agile Software Development</br>
+
+<h2>Our highest priority is to satisfy the customer <br>&#x2028;through early and <span class="highlight">continuous delivery&#x2028;</span> <br>of <span class="highlight">valuable software</span>.</br></br>
+</h2>
+</h1></div>
+</div><div id="definition/01_slide" class="slide " data-transition="none">
+  <div class="content " ref="definition/01_slide/6">
+<p><img src="./file/definition/the_poppendiecks.png" width="70%"/></p>
+
+<p>How long would it take your organisation<br>
+to deploy a change that involves<br>
+just one single line of code.</br>
+
+<p>Do you do this on a repeatable, reliable basis?</p></br>
+</p>
+</div>
+</div><div id="definition/01_slide" class="slide incremental" data-transition="none"><div class="content incremental" ref="definition/01_slide/7">
+<h1>Continuous Delivery</h1>
+
+<ul>
+<li>Software always production ready</li>
+<li>Releases tied to business needs, not operational constraints</li>
+</ul></div>
+</div><div id="definition/01_slide" class="slide incremental" data-transition="none"><div class="content incremental" ref="definition/01_slide/8">
+<h1>What Continuous Delivery is not</h1>
+
+<ul>
+<li>Continuous Integration</li>
+<li>Continuous Deployment</li>
+<li>Deployment Tools</li>
+</ul></div>
+</div><div id="definition/01_slide" class="slide incremental" data-transition="none"><div class="content incremental" ref="definition/01_slide/9">
+<h1>Benefits for the Business</h1>
+
+<ul>
+<li>Validate business plan, faster earlier</li>
+<li>Costs are more predictable</li>
+<li>Can respond to market demands</li>
+</ul></div>
+</div><div id="definition/01_slide" class="slide incremental" data-transition="none"><div class="content incremental" ref="definition/01_slide/10">
+<h1>Benefits for IT</h1>
+
+<ul>
+<li>Less risk per release</li>
+<li>Feedback on development process</li>
+</ul></div>
+</div><div id="definition/01_slide" class="slide " data-transition="none"><div class="content " ref="definition/01_slide/11">
+<p><b>Fast, automated feedback</b> on the <b>production readiness</b> of your application <b>every</b> time there is a <b>change</b> - to code, infrastructure, or configuration</p></div>
+</div><div id="definition/02_principles" class="slide new-chapter" data-transition="none"><div class="content new-chapter" ref="definition/02_principles/1">
+<h1>Principles</h1></div>
+</div><div id="definition/02_principles" class="slide " data-transition="none"><div class="content " ref="definition/02_principles/2">
+<h1>Principles</h1>
+
+<p>create a repeatable, reliable process for releasing software</p>
+
+<p><img src="./file/definition/principles.png" width="100%"/></p>
+
+<div class="notes">
+
+<ul>
+<li><p>Provisioning boxes
+Infrastructure as Code</p></li>
+<li><p>Deployments
+Version control / Manage source code
+Code Reviews</p></li>
+<li><p>DB migrations
+DBdeploy</p></li>
+<li><p>Monitoring
+"We find a lot of bugs through production monitoring that we would have
+never concieved of writing tests for" &#x2013; Mike Brittain, Etsy</p></li>
+<li><p>Visibility</p></li>
+</ul>
+<p>"Anything that can be measured can be improved" - Michael Dell, Dell Computers</p>
+
+<p>business metrics
+technical metrics
+correlation</p>
+
+</div></div>
+</div><div id="definition/02_principles" class="slide incremental" data-transition="none"><div class="content incremental" ref="definition/02_principles/3">
+<h1>Principles</h1>
+
+<ul>
+<li>automate almost everything</li>
+<li>build, deploy, test, release</li>
+<li>manual testing, approvals</li>
+<li>use humans for high value stuff</li>
+</ul><div class="notes">
+
+<p>automate build, deploy, test, release
+can&#x2019;t automate manual testing
+approvals are still necessary
+do it incrementally!</p>
+
+</div></div>
+</div><div id="definition/02_principles" class="slide incremental" data-transition="none"><div class="content incremental" ref="definition/02_principles/4">
+<h1>Principles</h1>
+
+<ul>
+<li>keep everything in version control</li>
+</ul><div class="notes">
+
+<p>including middleware, dependencies and infrastructure config
+you should be able to sit down at a workstation, check out source code, and type a single command to build the app, and another to deploy it</p>
+
+</div>
+
+<ul>
+<li>if it hurts, do it more often, and bring the pain forward</li>
+</ul><div class="notes">
+
+<p>Problem: pain at end. solution: pain at beginning. principle of CI. This has an effect on the narrative arc of a project</p>
+
+</div>
+
+<ul>
+<li>build quality in</li>
+</ul><div class="notes">
+
+<p>testing is not a &#x201C;phase&#x201D;. the quicker you catch it, the cheaper it is to fix. act!</p>
+
+</div></div>
+</div><div id="definition/02_principles" class="slide " data-transition="none">
+  <div class="content " ref="definition/02_principles/5">
+<p><img src="./file/definition/deming.jpg" align="left" width="250px"/></p><p align="right">"Cease dependence on mass <u>inspection</u> to&#x2028; <br>achieve <u>quality</u>. Improve the process <br>and <u>build quality</u> into the product <br>in the first place"
+<br><br><small style="font-size:.6em">&#x2013; W. Edwards Deming, Author of &#x201C;Out of Crisis&#x201D;</small></br></br>
+</br>
+</br></br></p></div>
+</div><div id="definition/02_principles" class="slide incremental" data-transition="none"><div class="content incremental" ref="definition/02_principles/6">
+<h1>Principles</h1>
+
+<ul>
+<li>done means released</li>
+<li>done means used by end users</li>
+</ul></div>
+</div><div id="definition/02_principles" class="slide " data-transition="none"><div class="content " ref="definition/02_principles/7">
+<h1>Principles</h1>
+
+<p><img src="./file/definition/scope.png" width="70%"/></p>
+
+<div class="notes">
+
+<p>done != dev complete</p>
+
+</div></div>
+</div><div id="definition/02_principles" class="slide incremental" data-transition="none"><div class="content incremental" ref="definition/02_principles/8">
+<h1>Principles</h1>
+
+<ul>
+<li>everybody is responsible for delivery (devs, testers, dbas, ops)
+culture change</li>
+</ul></div>
+</div><div id="definition/02_principles" class="slide " data-transition="none">
+  <div class="content " ref="definition/02_principles/9">
+<p><img src="./file/definition/mike_brittainphoto.jpg" align="left" width="250px"/></p><p align="right">"We have built the culture in our Engineering team to assume everyone is going to do the right thing, and we should trust them. When that trust falls apart, I think of it as a bug in our hiring and on boarding processes."
+<br><br><small style="font-size:.6em">&#x2013; <a href="https://groups.google.com/d/msg/continuousdelivery/9_5xpiHJZUc/O8l_-lL1U08J">Mike Brittain</a>, Etsy</small></br>
+
+<div class="notes">
+
+<p>What if hiring is hard?</p>
+
+</div></br>
+</p>
+</div>
+</div><div id="definition/02_principles" class="slide " data-transition="none"><div class="content " ref="definition/02_principles/10">
+<h1>Principles</h1>
+
+<h2><span style="font-size:5em">&#x6539;&#x5584;</span></h2>
+
+<ul>
+<li>
+<a href="http://en.wikipedia.org/wiki/Kaizen">Kaizen</a> (= "good change")</li>
+<li>continuous improvement</li>
+</ul><div class="notes">
+
+<p>retrospectives: the agile practice from which all other agile practices follow
+deming cycle: plan, do, study act; organizational transformation; maturity model</p>
+
+</div></div>
+</div><div id="definition/02_principles" class="slide incremental" data-transition="none"><div class="content incremental" ref="definition/02_principles/11">
+<h1>Deployment Pipeline</h1>
+
+<p>an automated implementation <br>of your system&#x2019;s build, deploy, test, release process</br>
+
+<ul>
+<li>visibility</li>
+<li>feedback</li>
+<li>control</li>
+</ul><div class="notes">
+
+<p>Visualize your Value Stream</p>
+
+<p>visibility - helps collaboration, provides traceability
+feedback - is my software production ready right now? if not, why?
+control - pull system, push-button deployments</p>
+
+</div></p>
+</div>
+</div><div id="definition/02_principles" class="slide " data-transition="none"><div class="content " ref="definition/02_principles/12">
+<p><img src="./file/definition/deployment_pipeline.png" width="100%"/></p></div>
+</div><div id="definition/02_principles" class="slide " data-transition="none">
+  <div class="content " ref="definition/02_principles/13">
+<p><img src="./file/definition/mike_brittainphoto.jpg" align="left" width="250px"/></p><p align="right">"We don't optimize for being right, we optimize for detecting when we're wrong"
+<br><br><small style="font-size:.6em">&#x2013; <a href="https://twitter.com/0x604/status/344128876781379584">Mike Brittain</a>, Etsy</small></br></br>
+</p>
+</div>
+</div><div id="case_studies/01_slide" class="slide new-chapter center" data-transition="none"><div class="content new-chapter center" ref="case_studies/01_slide/1">
+<h1>Case Studies</h1></div>
+</div><div id="case_studies/01_slide" class="slide " data-transition="none"><div class="content " ref="case_studies/01_slide/2">
+<h1>thoughtworks.com</h1>
+
+<p>Push button deployment into all environments,
+Push to live most business days,
+All tests run in 30s,
+Turnaround from request to production with <em>entire</em> quality process ~1 hour</p>
+
+<h1>github.com</h1>
+
+<p>highly distributed team,
+communication through chat room,
+everyone is pairing all of the time,</p>
+
+<p>Puppet, Monitoring, Deployments&#x2026;&#x2028;&#x2028;all accessible to anyone at Github through chat room</p></div>
+</div><div id="practices/01_slide" class="slide new-chapter center" data-transition="none"><div class="content new-chapter center" ref="practices/01_slide/1">
+<h1>Typical Continuous Delivery Practices</h1></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/2">
+<ul>
+<li>everything in version control</li>
+<li>comprehensive configuration management</li>
+<li>excellent automated testing at all levels</li>
+<li>continuous integration</li>
+</ul><div class="notes">
+
+<h1>Lead Time from "Code Committed" to "Ready To Ship"</h1>
+
+<ul>
+<li>5% of Development time spent writing new features</li>
+<li>15 - 20% of Development time was spent integrating their code into mainline (i.e. trunk)</li>
+</ul>
+<p><small><a href="http://itrevolution.com/the-amazing-devops-transformation-of-the-hp-laserjet-firmware-team-gary-gruver/#">Source</a></small></p>
+
+</div></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/3">
+<p><img src="./file/practices/ci_model.png" width="90%"/></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/4">
+<p><img src="./file/practices/confidence_production_readiness.png" width="100%"/></p></div>
+</div><div id="practices/01_slide" class="slide incremental" data-transition="none"><div class="content incremental" ref="practices/01_slide/5">
+<h1>Commit stage</h1>
+
+<p><img src="./file/practices/commit_stage.png" width="100%"/></p>
+
+<ul>
+<li>Run against every check-in</li>
+<li>Creates a release candidate</li>
+<li>If it fails, fix it immediately</li>
+</ul></div>
+</div><div id="practices/01_slide" class="slide incremental" data-transition="none"><div class="content incremental" ref="practices/01_slide/6">
+<h1>Acceptance stage</h1>
+
+<p><img src="./file/practices/acceptance_stage.png" width="100%"/></p>
+
+<ul>
+<li>End-to-end tests in production-like environment</li>
+<li>Triggered whenever commit tests pass</li>
+</ul></div>
+</div><div id="practices/01_slide" class="slide incremental" data-transition="none"><div class="content incremental" ref="practices/01_slide/7">
+<h1>Manual stages</h1>
+
+<p><img src="./file/practices/manual_stage.png" width="100%"/></p>
+
+<ul>
+<li>UAT, staging, integration, production</li>
+<li>Deployments self-serviced using push-button process</li>
+</ul></div>
+</div><div id="practices/01_slide" class="slide incremental" data-transition="none"><div class="content incremental" ref="practices/01_slide/8">
+<h1>Practices</h1>
+
+<ul>
+<li>only build your binaries once</li>
+<li>deploy the same way to every environment</li>
+<li>smoke test your deployments</li>
+<li>keep your environments similar</li>
+<li>if anything fails, stop the line</li>
+</ul></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/9">
+<h1>Versioned Artefacts</h1>
+
+<ul>
+<li>app-v0.0.147.zip</li>
+<li>app-v0.0.148.zip</li>
+<li>app-v0.0.149.zip</li>
+</ul><p><em>Use <a href="http://semver.org/">Semantic Versioning</a>!</em></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/10">
+<h1>Versioned Artefacts</h1>
+
+<p><img src="./file/practices/versioned_artifacts.png" width="90%"/></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/11">
+<h1>Versioned Artefacts</h1>
+
+<p><img src="./file/practices/versioned_artifacts_spot.png" width="90%"/></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/12">
+<h1>External Environment Configuration</h1>
+
+<p><img src="./file/practices/external_configuration_build_dev.png" width="100%"/></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/13">
+<h1>External Environment Configuration</h1>
+
+<p><img src="./file/practices/external_configuration_build_qa.png" width="100%"/></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/14">
+<h1>External Environment Configuration</h1>
+
+<p><img src="./file/practices/external_configuration_build_prod.png" width="100%"/></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/15">
+<h1>External Environment Configuration</h1>
+
+<p><img src="./file/practices/external_configuration_build_nono.png" width="100%"/></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/16">
+<h1>External Environment Configuration</h1>
+
+<p><img src="./file/practices/external_configuration_dev.png" width="100%"/></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/17">
+<h1>External Environment Configuration</h1>
+
+<p><img src="./file/practices/external_configuration_qa.png" width="100%"/></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/18">
+<h1>Short Lived Feature Branches</h1>
+
+<p><img src="./file/practices/feature_branches.png" width="100%"/></p>
+
+<p><em>Cleanup to avoid technical debt!</em></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/19">
+<h1>Feature Toggles</h1>
+
+<p><img src="./file/practices/feature_toggles.png" width="100%"/></p>
+
+<p><em>Cleanup to avoid technical debt!</em></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/20">
+<h1>Feature Toggles Example</h1>
+
+<p><code>
+if( MyFeatures.FEATURE_ONE.isActive() ) {
+  // execute code for new feature
+}
+</code></p>
+
+<p><em>Cleanup to avoid technical debt!</em></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/21">
+<h1>Feature Toggles Dashboard</h1>
+
+<p><img src="./file/practices/togglz_screenshot-admin-console.png" width="100%"/></p>
+
+<p><em>Cleanup to avoid technical debt!</em></p>
+
+<div class="notes">
+
+<p>http://webdevnights.github.io/feature-flipping/</p>
+
+<p>Implementations:</p>
+
+<p>Ruby
+Flip github.com/pda/flip
+Rollout github.com/jamesgolick/rollout
+Degrade github.com/jamesgolick/degrade</p>
+
+<p>PHP
+FeatureToggle (Symfony) github.com/marekkalnik/FeatureToggleBundle</p>
+
+<p>Python
+Gargoyle (Django) github.com/disqus/gargoyle
+Django Waffle (Django) github.com/jsocol/django-waffle</p>
+
+<p>Java
+http://www.togglz.org/quickstart.html</p>
+
+<p>JavaScript
+FeatureFlipperJS (Node)
+github.com/bigodines/feature-flipper-js</p>
+
+<p>.net
+FeatureToggle
+github.com/jason-roberts/FeatureToggle</p>
+
+<p>Groovy
+GrailsFeatureToggle
+github.com/ryannorris/grails-feature-toggle</p>
+
+</div></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/22">
+<h1>Inside Out Development</h1>
+
+<p><img src="./file/practices/inside_out_development.png" width="50%"/></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/23">
+<h1>Deployment Strategies</h1>
+
+<ul>
+<li>Push Button Release</li>
+<li>Separate Deployments from Releases</li>
+<li>Roll Forward</li>
+</ul></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/24">
+<h1>Canary Releases</h1>
+
+<p>&#x2192; release to subset of customer</p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/25">
+<p><img src="./file/practices/canary_releases.png" width="100%"/></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/26">
+<h1>Blue Green Deployments</h1>
+
+<p>&#x2192; zero-downtime deployments</p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/27">
+<p><img src="./file/practices/blue_green_0.png" width="100%"/></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/28">
+<p><img src="./file/practices/blue_green_1.png" width="100%"/></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/29">
+<p><img src="./file/practices/blue_green_2.png" width="100%"/></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/30">
+<p><img src="./file/practices/blue_green_3.png" width="100%"/></p></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/31">
+<h1>Database Changes</h1>
+
+<ul>
+<li>provide backwards compatibility</li>
+<li>branch by abstraction (2-Write, 1-Read)</li>
+<li>lazy migrations (Add, not alter; Remove when safe)</li>
+</ul></div>
+</div><div id="practices/01_slide" class="slide " data-transition="none"><div class="content " ref="practices/01_slide/32">
+<p><img src="./file/practices/db_migrations.png" width="100%"/></p></div>
+</div><div id="exercise/01_slide" class="slide new-chapter center" data-transition="none"><div class="content new-chapter center" ref="exercise/01_slide">
+<h1>Interactive Exercise</h1>
+
+<div class="handouts">
+
+
+
+<p>This is supplementary material that will only appear in the printed version.</p>
+
+</div></div>
+</div><div id="transition/01_slide" class="slide new-chapter center" data-transition="none"><div class="content new-chapter center" ref="transition/01_slide/1">
+<h1>Transitioning to Continuous Delivery</h1></div>
+</div><div id="transition/01_slide" class="slide " data-transition="none"><div class="content " ref="transition/01_slide/2">
+<h1>Challenges</h1>
+
+<h2>70% cultural &gt; 30% technical</h2></div>
+</div><div id="transition/01_slide" class="slide " data-transition="none"><div class="content " ref="transition/01_slide/3">
+<h1>The Technical Challenge</h1>
+
+<p>Software has to be in releasable/deployable state all the time.</p></div>
+</div><div id="transition/01_slide" class="slide " data-transition="none"><div class="content " ref="transition/01_slide/4">
+<h1>The Cultural Challenge</h1></div>
+</div><div id="transition/01_slide" class="slide " data-transition="none"><div class="content " ref="transition/01_slide/5">
+<h1>Cross Functional Teams / DevOps</h1>
+
+<ul>
+<li>Optimize &#x201C;Last Mile&#x201D;</li>
+<li>QA + Ops as part of the team</li>
+<li>everyone is taking care of PROD</li>
+<li>you build it, you run it</li>
+</ul></div>
+</div><div id="transition/01_slide" class="slide " data-transition="none"><div class="content " ref="transition/01_slide/6">
+<p><img src="./file/transition/devops.png" width="90%"/></p></div>
+</div><div id="transition/01_slide" class="slide incremental" data-transition="none"><div class="content incremental" ref="transition/01_slide/7">
+<h1>DevOps Best Practices</h1>
+
+<ul>
+<li>Regular Visits / Walk&amp;Talk</li>
+<li>Pairing Culture / Force-To-Pair</li>
+<li>Developers Doing Production Support</li>
+<li>Production Metric Driven Requirements</li>
+</ul></div>
+</div><div id="transition/01_slide" class="slide " data-transition="none"><div class="content " ref="transition/01_slide/8">
+<h1>Build Trust</h1>
+
+<ul>
+<li>Automate testing</li>
+<li>Re-think the role of QA</li>
+</ul></div>
+</div><div id="transition/01_slide" class="slide " data-transition="none"><div class="content " ref="transition/01_slide/9">
+<p><img src="./file/transition/testing_pyramid.png" width="90%"/></p></div>
+</div><div id="transition/01_slide" class="slide " data-transition="none"><div class="content " ref="transition/01_slide/10">
+<p><img src="./file/transition/manual_testing.png" width="90%"/></p></div>
+</div><div id="transition/01_slide" class="slide " data-transition="none"><div class="content " ref="transition/01_slide/11">
+<h1>Infrastructure As Code</h1>
+
+<ul>
+<li>Automate server setup</li>
+<li>Goal: Full automation</li>
+</ul><p><img src="./file/transition/ansible_badge.png" width="50px"/><img src="./file/transition/chef.png" width="100px"/><img src="./file/transition/cfengine.png" width="250px"/><img src="./file/transition/puppet.png" width="150px"/></p></div>
+</div><div id="transition/01_slide" class="slide " data-transition="none"><div class="content " ref="transition/01_slide/12">
+<h1>Read</h1>
+
+<p><img src="./file/transition/release_it.jpg" width="450px"/></p>
+
+<p><a href="http://pragprog.com/book/mnee/release-it">http://pragprog.com/book/mnee/release-it</a></p></div>
+</div><div id="transition/01_slide" class="slide " data-transition="none"><div class="content " ref="transition/01_slide/13">
+<h1>Read</h1>
+
+<p><img src="./file/transition/continuous-delivery.jpg" width="350px"/></p>
+
+<p><a href="http://continuousdelivery.com/">http://continuousdelivery.com/</a></p>
+
+<div class="notes">
+
+<p>What would you do when I'd be open fo losing control?</p>
+
+<p>Was w&#xFC;rde ich tun, wenn ich keine Angst h&#xE4;tte die Kontrolle zu
+verlieren?</p>
+
+<h1>Continuous deployment is a process</h1>
+
+<p>"Whereby all code that is written for an application is immediately deployed into production, which results in a reduction of cycle time."
+&#x2013; Eric Ries (Lean Startup)</p>
+
+<p>A bad system will beat a good person every time
+&#x2013; W. Edwards Deming, Author of &#x201C;Out of Crisis&#x201D;</p>
+
+</div></div>
+</div><div id="thank_you/01_slide" class="slide " data-transition="none"><div class="content " ref="thank_you/01_slide/1">
+<h1>Questions?</h1></div>
+</div><div id="thank_you/01_slide" class="slide " data-transition="none">
+  <div class="content " ref="thank_you/01_slide/2">
+<h1>Thanks!</h1>
+
+<p><a href="http://twitter.com/ctrabold">@ctrabold</a><br><a href="http://christian-trabold.de">http://christian-trabold.de</a></br>
+
+<p>Get involved: <a href="https://groups.google.com/forum/m/#!forum/continuousdelivery">groups.google.com &#x2192; continuousdelivery</a><br>
+Get tweets: <a href="https://twitter.com/hashtag/continuousdelivery">twitter &#x2192; #continuousdelivery</a></br></p>
+</p>
+</div>
+</div></div>
+<div id="pauseScreen">
+  Paused
+</div>
+
+</body>
+</html>
